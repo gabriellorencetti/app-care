@@ -4,17 +4,29 @@
     <string name="seletor_denuncia">Escolha o tipo de denúncia</string>
 
     <string-array name="tipos_denuncia">
-        <item>Tipo 1</item>
-        <item>Tipo 2</item>
-        <item>Tipo 3</item>
-        <item>Tipo 4</item>
-        <item>Tipo 5</item>
-        <item>Tipo 6</item>
-        <item>Tipo 7</item>
+        <item>Tentativa de feminicídio</item>
+        <item>Violência doméstica</item>
+        <item>Assédio</item>
     </string-array>
 
     <string name="open">Open</string>
     <string name="close">Close</string>
+
+    <string name="telefones_string">\nDelegacia da Mulher (Denúncia)\n180\n\n
+    Centro de valorização da vida\n(Apoio psicológico)\n188
+    \n\nSAMU (Emergências Médicas)\n192\n\nDireitos humanos\n(Consulta de direitos e denúncia)\n100</string>
+
+    <string name="infos_string"><b>\tComo funciona o aplicativo?</b>\n
+        \tO aplicativo permite que você faça, de forma fácil, denúncias anônimas contra três tipos de violência: assédio, tentativa de feminicidio e violência doméstica.
+            Além disso, ele também conta com o modo Emergência, recomendado para aquelas situações em que não se sente segura ao sair sozinha.
+            As suas denúncias são enviadas de modo anônimo às autoridades para que elas possam tomar as atitudes cabíveis.\n\n
+        \t<b>Como fazer denúncias?</b>\n
+        \tBasta que, a partir da tela inicial, você clique no botão Denúncia e preencha os campos solicitados, descrevendo a violência sofrida ou presenciada. Após isso, basta clicar em Fazer Denúncia e pronto, a sua denúncia será registrada.\n\n
+
+        \t<b>Como funciona o modo Emergência?</b>\n
+        \tEle permite que você envie um sinal de emergência para as autoridades competentes da sua região sempre que você estiver em perigo.
+        Após ativar o modo de emergência a partir da tela inicial (no botão "Emergência) e escolher a sua duração, basta chacoalhar o celular quando estiver em perigo -- só assim a sua ocorrência será registrada.\n\n\t<b>O que acontece se eu chacoalhar o celular sem querer?</b>\n\tVocê pode desfazer a ação até 30 segundos após ela ter sido feita. OBS: o modo "Emergência" é desativado automaticamente após a duração escolhida durante sua ativação.\n\n\t<b>O que fazemos com as suas denúncias/solicitações de emergência?</b>\n\tAs denúncias são enviadas ao banco de dados das Delegacias da Mulher em sua região. Lá as ocorrências são avaliadas e, de acordo com a situação, as decisões cabíveis são tomadas.\n
+       </string>
 
 
 </resources>

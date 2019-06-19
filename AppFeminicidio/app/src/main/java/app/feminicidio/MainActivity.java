@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         setupDrawerContent(nvDrawer);
 
         FirebaseApp.initializeApp(getApplicationContext());
-
         getPermissaoLocalizacao();
         getLocalizacao();
 

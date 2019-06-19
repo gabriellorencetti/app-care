@@ -1,9 +1,13 @@
 package app.feminicidio;
 
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,6 +41,9 @@ public class DenunciaActivity extends AppCompatActivity {
         selectDenuncia = (Spinner) findViewById(R.id.selectDenuncia);
         textoDenuncia = (EditText) findViewById(R.id.textoDenuncia);
         bFazerDenuncia = (Button) findViewById(R.id.bFazerDenuncia);
+
+        NavigationView nvDrawer = (NavigationView) findViewById(R.id.sidebar);
+        setupDrawerContent(nvDrawer);
 
         inicializaFirebase();
         firebaseLeTotalDenuncias();
@@ -92,6 +99,53 @@ public class DenunciaActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError error) {
             }
         });
+    }
+
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                selectItemDrawer(menuItem);
+                return true;
+            }
+        });
+    }
+
+    public void selectItemDrawer(MenuItem menuItem) {
+
+        switch (menuItem.getItemId()) {
+            case R.id.nav_main:
+                openMainActivity();
+                break;
+
+            case R.id.nav_denuncia:
+                break;
+
+            case R.id.nav_telefones:
+                openTelefonesActivity();
+                break;
+
+            case R.id.nav_info:
+                openInfoActivity();
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void openMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    public void openTelefonesActivity() {
+        Intent intent = new Intent(this, TelefonesActivity.class);
+        startActivity(intent);
+    }
+
+    public void openInfoActivity() {
+        Intent intent = new Intent(this, InformacoesActivity.class);
+        startActivity(intent);
     }
 
 
