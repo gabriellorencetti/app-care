@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"   xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f06e9c"
+    tools:context=".DenunciaActivity">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Spinner
+            android:id="@+id/selectDenuncia"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="25dp"
+            android:backgroundTint="#BC2A5D"
+            android:background="#BC2A5D"
+            android:entries="@array/tipos_denuncia"
+            android:popupBackground="#bb285c"
+            android:theme="@style/Spinner"
+            android:prompt="@string/seletor_denuncia"
+            android:spinnerMode="dropdown"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <Button
+            android:id="@+id/bFazerDenuncia"
+            android:layout_width="150dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="25dp"
+            android:background="#BC2A5D"
+            android:backgroundTint="#bb285c"
+            android:text="Fazer denúncia"
+            android:textColor="#FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textoDenuncia" />
+
+        <EditText
+            android:id="@+id/textoDenuncia"
+            android:layout_width="0dp"
+            android:layout_height="325dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="25dp"
+            android:background="#E91E63"
+            android:backgroundTint="#E91E63"
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
+            android:padding="10dp"
+            android:textColor="#FFFFFF"
+            android:textColorHighlight="#F06F9D"
+            android:textColorHint="#FFFFFF"
+            android:textColorLink="#FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/selectDenuncia" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/sidebar"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:menu="@menu/navigation_menu"
+        tools:layout_editor_absoluteX="0dp">
+    </android.support.design.widget.NavigationView>
+
+</android.support.v4.widget.DrawerLayout>

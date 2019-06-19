@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">AppFeminicidio</string>
+
+    <string name="seletor_denuncia">Escolha o tipo de denúncia</string>
+
+    <string-array name="tipos_denuncia">
+        <item>Tipo 1</item>
+        <item>Tipo 2</item>
+        <item>Tipo 3</item>
+        <item>Tipo 4</item>
+        <item>Tipo 5</item>
+        <item>Tipo 6</item>
+        <item>Tipo 7</item>
+    </string-array>
+
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+
+</resources>

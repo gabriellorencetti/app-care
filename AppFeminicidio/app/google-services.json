@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "964947970786",
+    "firebase_url": "https://appfeminicidio.firebaseio.com",
+    "project_id": "appfeminicidio",
+    "storage_bucket": "appfeminicidio.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:964947970786:android:4f2da718aebcbb36",
+        "android_client_info": {
+          "package_name": "app.feminicidio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "964947970786-ahcut8inuue09cp8nqm0geiubn3ejmqm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.feminicidio",
+            "certificate_hash": "5b0ed650d03468b7394d8afa6ec563e05f0cb6d9"
+          }
+        },
+        {
+          "client_id": "964947970786-144l81395211m6ejjv5tj35s7r27c5g2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBABFguC7y28ytuyrvXf0IofzuXXzkRwJk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "964947970786-144l81395211m6ejjv5tj35s7r27c5g2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

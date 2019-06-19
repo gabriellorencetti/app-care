@@ -1,0 +1,16 @@
+package app.feminicidio;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+
+public class TelefonesActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_telefones);
+
+        MainActivity a = new MainActivity();
+
+    }
+}
