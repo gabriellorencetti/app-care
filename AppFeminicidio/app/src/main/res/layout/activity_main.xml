@@ -17,16 +17,17 @@
         <Button
             android:id="@+id/bTelefones"
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="80dp"
             android:background="#bb285c"
             android:backgroundTint="#bb285c"
             android:drawableLeft="@drawable/ic_phone"
-            android:padding="35dp"
+            android:padding="28dp"
             android:text="Telefones úteis"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/bEmergenciaL"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
@@ -36,18 +37,19 @@
             android:background="#e93578"
             android:backgroundTint="#e93578"
             android:drawableLeft="@drawable/ic_announcement"
-            android:padding="35dp"
+            android:padding="28dp"
             android:text="Fazer denúncia"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/bTelefones"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
             android:id="@+id/imageLogo"
             android:layout_width="265dp"
-            android:layout_height="200dp"
+            android:layout_height="180dp"
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -55,10 +57,9 @@
             app:srcCompat="@drawable/flower_logo" />
 
         <TextView
-            android:id="@+id/textLogo"
+            android:id="@+id/nomeApp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:text="NomeApp"
             android:textColor="#FFFFFF"
             android:textSize="36sp"
@@ -66,6 +67,22 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageLogo" />
+
+        <Button
+            android:id="@+id/bEmergenciaL"
+            android:layout_width="410dp"
+            android:layout_height="80dp"
+            android:background="#8F1741"
+            android:drawableLeft="@drawable/ic_my_location_black_24dp"
+            android:padding="28dp"
+            android:text="             EMERGÊNCIA"
+            android:textAlignment="textStart"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
     </android.support.constraint.ConstraintLayout>
