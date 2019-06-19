@@ -15,29 +15,35 @@
             android:layout_width="0dp"
             android:layout_height="46dp"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="25dp"
-            android:backgroundTint="#BC2A5D"
+            android:layout_marginBottom="20dp"
             android:background="#BC2A5D"
+            android:backgroundTint="#BC2A5D"
             android:entries="@array/tipos_denuncia"
             android:popupBackground="#bb285c"
-            android:theme="@style/Spinner"
             android:prompt="@string/seletor_denuncia"
             android:spinnerMode="dropdown"
+            android:theme="@style/Spinner"
+            app:layout_constraintBottom_toTopOf="@+id/textoDenuncia"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 
         <Button
             android:id="@+id/bFazerDenuncia"
             android:layout_width="150dp"
-            android:layout_height="49dp"
-            android:layout_marginTop="25dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="50dp"
             android:background="#BC2A5D"
             android:backgroundTint="#bb285c"
             android:text="Fazer denúncia"
             android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textoDenuncia" />
@@ -47,8 +53,9 @@
             android:layout_width="0dp"
             android:layout_height="325dp"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="25dp"
+            android:layout_marginBottom="30dp"
             android:background="#E91E63"
             android:backgroundTint="#E91E63"
             android:ems="10"
@@ -60,9 +67,41 @@
             android:textColorHighlight="#F06F9D"
             android:textColorHint="#99FFFFFF"
             android:textColorLink="#FFFFFF"
+            app:layout_constraintBottom_toTopOf="@+id/bFazerDenuncia"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/selectDenuncia" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/selectDenuncia"
+            app:layout_constraintEnd_toEndOf="@+id/selectDenuncia"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/selectDenuncia"
+            app:layout_constraintTop_toTopOf="@+id/selectDenuncia"
+            app:srcCompat="@android:drawable/arrow_down_float" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="31dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="10dp"
+            android:text="Escolha o tipo de denúncia:"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/selectDenuncia"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.14"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 
