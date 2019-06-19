@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AppFeminicidio</string>
+    <string name="app_name">C.A.R.E.</string>
 
     <string name="seletor_denuncia">Escolha o tipo de denúncia</string>
 
@@ -12,20 +12,26 @@
     <string name="open">Open</string>
     <string name="close">Close</string>
 
-    <string name="telefones_string">\nDelegacia da Mulher (Denúncia)\n180\n\n
-    Centro de valorização da vida\n(Apoio psicológico)\n188
-    \n\nSAMU (Emergências Médicas)\n192\n\nDireitos humanos\n(Consulta de direitos e denúncia)\n100</string>
+    <string name="telefones_string">\n<b>Delegacia da Mulher (Denúncia)</b>\n<font size="28">180</font>\n\n
+        <b>Centro de valorização da vida\n(Apoio psicológico)</b>\n<font size="28">188</font>
+        \n\n<b>SAMU (Emergências Médicas)</b>\n<font size="28">192</font>\n\n<b>Direitos humanos\n(Consulta de direitos e denúncia)</b>\n<font size="28">100</font></string>
 
-    <string name="infos_string"><b>\tComo funciona o aplicativo?</b>\n
-        \tO aplicativo permite que você faça, de forma fácil, denúncias anônimas contra três tipos de violência: assédio, tentativa de feminicidio e violência doméstica.
-            Além disso, ele também conta com o modo Emergência, recomendado para aquelas situações em que não se sente segura ao sair sozinha.
-            As suas denúncias são enviadas de modo anônimo às autoridades para que elas possam tomar as atitudes cabíveis.\n\n
-        \t<b>Como fazer denúncias?</b>\n
-        \tBasta que, a partir da tela inicial, você clique no botão Denúncia e preencha os campos solicitados, descrevendo a violência sofrida ou presenciada. Após isso, basta clicar em Fazer Denúncia e pronto, a sua denúncia será registrada.\n\n
+    <string name="infos_string"><b><font size="20">\tComo funciona o aplicativo?</font></b>\n
+        \tO aplicativo permite que você faça, de forma fácil, denúncias contra três tipos de violência: assédio, tentativa de feminicídio e violência doméstica.
+        Além disso, ele também conta com o Modo Emergência, recomendado para àquelas situações em que você não se sente seguro.
+        As suas denúncias são enviadas de modo anônimo às autoridades para que elas possam tomar as atitudes cabíveis.\n\n
 
-        \t<b>Como funciona o modo Emergência?</b>\n
+        \t<b><font size="20">Como fazer uma denúncia?</font></b>\n
+        \tBasta que, a partir da tela inicial, você toque no botão \"\Fazer Denúncia\"\ e preencha os campos solicitados, descrevendo a violência sofrida ou presenciada.
+        Feito isso, toque em \"\Registrar Denúncia\"\ e pronto.\n\n
+        \t<b><font size="20">Onde posso encontrar telefones úteis?</font>
+        </b>\nO aplicativo provê, em sua tela inicial, um botão \"\Telefones úteis\"\. Ao tocá-lo, você será guiado a uma tela onde são expostos uma série de telefones úteis para casos de emergência.\n\n
+        \t<b><font size="20">Como funciona o Modo Emergência?</font></b>\n
         \tEle permite que você envie um sinal de emergência para as autoridades competentes da sua região sempre que você estiver em perigo.
-        Após ativar o modo de emergência a partir da tela inicial (no botão "Emergência) e escolher a sua duração, basta chacoalhar o celular quando estiver em perigo -- só assim a sua ocorrência será registrada.\n\n\t<b>O que acontece se eu chacoalhar o celular sem querer?</b>\n\tVocê pode desfazer a ação até 30 segundos após ela ter sido feita. OBS: o modo "Emergência" é desativado automaticamente após a duração escolhida durante sua ativação.\n\n\t<b>O que fazemos com as suas denúncias/solicitações de emergência?</b>\n\tAs denúncias são enviadas ao banco de dados das Delegacias da Mulher em sua região. Lá as ocorrências são avaliadas e, de acordo com a situação, as decisões cabíveis são tomadas.\n
+        Após ativar o modo de emergência a partir da tela inicial, ele ficará ativo por 10 segundos, bastando agitar o celular para enviar sua localização e a emergência ser registrada. O modo emergência é desativado automaticamente após os 10 segundos, para evitar o reenvio acidental da localização.\n
+
+        <b><font size="20">\n\nO que fazemos com as suas denúncias/solicitações de emergência?</font></b>
+        \n\tAs denúncias são enviadas ao banco de dados da Delegacia da Mulher de sua região. Lá as ocorrências são avaliadas e, de acordo com a situação, decisões cabíveis são tomadas.\n
        </string>
 
 
