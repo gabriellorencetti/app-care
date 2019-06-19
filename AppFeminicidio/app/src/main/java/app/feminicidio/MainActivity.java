@@ -29,6 +29,12 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 123;
@@ -64,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         NavigationView nvDrawer = (NavigationView) findViewById(R.id.sidebar);
         setupDrawerContent(nvDrawer);
+
+        FirebaseApp.initializeApp(getApplicationContext());
 
 
 
@@ -234,8 +242,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     public void onSuccess(Location location) {
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
-                            //banco de dados!
-                            //Toast.makeText(MainActivity.this, "latitude:"+location.getLatitude(), Toast.LENGTH_SHORT).show();
+                            Date currentTime = Calendar.getInstance().getTime();
+                            String data = currentTime.toString();
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            DatabaseReference myRef = database.getReference("emergencia/"+data+"/latitude");
+                            myRef.setValue(String.valueOf(location.getLatitude()));
+
+                            FirebaseDatabase database2 = FirebaseDatabase.getInstance();
+                            DatabaseReference myRef2 = database.getReference("emergencia/"+data+"/longitude");
+                            myRef2.setValue(String.valueOf(location.getLongitude()));
                         }
                     }
                 });
@@ -269,4 +284,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         }
     }
+
+
+
 }

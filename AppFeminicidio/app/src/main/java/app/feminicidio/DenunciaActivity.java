@@ -17,6 +17,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class DenunciaActivity extends AppCompatActivity {
 
     private Spinner selectDenuncia;
@@ -43,9 +46,11 @@ public class DenunciaActivity extends AppCompatActivity {
         bFazerDenuncia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Date currentTime = Calendar.getInstance().getTime();
+                String data = currentTime.toString();
                 //Adiciona a denuncia no banco de dados;
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("denuncias/"+selectDenuncia.getSelectedItem().toString()+"/denuncia"+totalDenuncias);
+                DatabaseReference myRef = database.getReference("denuncias/"+selectDenuncia.getSelectedItem().toString()+"/"+data);
                 String denuncia = textoDenuncia.getText().toString();
                 myRef.setValue(denuncia);
 
@@ -65,7 +70,7 @@ public class DenunciaActivity extends AppCompatActivity {
     /**
      * Inicializa o Firebase.
      */
-    private void inicializaFirebase() {
+    private void inicializaFirebase(){
         FirebaseApp.initializeApp(getApplicationContext());
     }
 
