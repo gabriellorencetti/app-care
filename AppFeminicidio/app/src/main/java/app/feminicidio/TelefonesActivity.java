@@ -14,6 +14,7 @@ public class TelefonesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_telefones);
 
+        // Inicializa o sidebar menu;
         NavigationView nvDrawer = (NavigationView) findViewById(R.id.sidebar);
         setupDrawerContent(nvDrawer);
 

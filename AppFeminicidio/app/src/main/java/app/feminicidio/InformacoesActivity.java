@@ -18,9 +18,11 @@ public class InformacoesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_informacoes);
 
+        // Inicializa o TextView de informacoes, e o torna rolavel;
         infos = (TextView) findViewById(R.id.infosTV);
         infos.setMovementMethod(new ScrollingMovementMethod());
 
+        // Inicializa sidebar menu;
         NavigationView nvDrawer = (NavigationView) findViewById(R.id.sidebar);
         setupDrawerContent(nvDrawer);
 
@@ -72,5 +74,4 @@ public class InformacoesActivity extends AppCompatActivity {
         Intent intent = new Intent(this, DenunciaActivity.class);
         startActivity(intent);
     }
-
 }

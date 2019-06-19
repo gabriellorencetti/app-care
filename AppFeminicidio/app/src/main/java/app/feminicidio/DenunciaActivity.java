@@ -42,11 +42,13 @@ public class DenunciaActivity extends AppCompatActivity {
         textoDenuncia = (EditText) findViewById(R.id.textoDenuncia);
         bFazerDenuncia = (Button) findViewById(R.id.bFazerDenuncia);
 
+        // Inicializa sidebar menu
         NavigationView nvDrawer = (NavigationView) findViewById(R.id.sidebar);
         setupDrawerContent(nvDrawer);
 
         inicializaFirebase();
         firebaseLeTotalDenuncias();
+
         /**
          * Ao tocar no botao, envia a denuncia para o banco de dados do Firebase.
          */
@@ -55,6 +57,7 @@ public class DenunciaActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Date currentTime = Calendar.getInstance().getTime();
                 String data = currentTime.toString();
+
                 //Adiciona a denuncia no banco de dados;
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference("denuncias/"+selectDenuncia.getSelectedItem().toString()+"/"+data);
@@ -82,7 +85,7 @@ public class DenunciaActivity extends AppCompatActivity {
     }
 
     /**
-     * Le do banco de dados do Firebase o total de denuncias ja armazenadas, para gerar uma chave nova.
+     * Le do banco de dados do Firebase o total de denuncias ja armazenadas, para atualizar o mesmo
      */
     private void firebaseLeTotalDenuncias() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -147,6 +150,4 @@ public class DenunciaActivity extends AppCompatActivity {
         Intent intent = new Intent(this, InformacoesActivity.class);
         startActivity(intent);
     }
-
-
 }

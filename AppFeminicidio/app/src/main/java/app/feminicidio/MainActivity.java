@@ -47,34 +47,25 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 123;
-
-
-    // The following are used for the shake detection
-
     private Button bDenuncia, bTelefones, bInfo, bEmergenciaL;
     private TextView nomeApp;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private static String longitude;
     private static String latitude;
-    boolean delay = true;
-
-
     private static int totalEmergencias;
     private SensorManager mSensorManager;
     private ShakeEventListener mSensorListener;
-
     private GoogleApiClient mGoogleApiClient;
     private FusedLocationProviderClient fusedLocationClient;
-    boolean b = false;
+    boolean ativarEnvioLocalizacao = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
 
         // Inicializando e referenciando os objetos;
         bDenuncia = (Button) findViewById(R.id.bDenuncia);
@@ -92,24 +83,19 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         NavigationView nvDrawer = (NavigationView) findViewById(R.id.sidebar);
         setupDrawerContent(nvDrawer);
 
+        // Inicializando o banco de dados Firebase
         FirebaseApp.initializeApp(getApplicationContext());
-        getPermissaoLocalizacao();
-        getLocalizacao();
 
+        //Inicializando o sensor que detecta a movimentacao do celular;
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensorListener = new ShakeEventListener();
 
+        // Listener para detectar movimento;
         mSensorListener.setOnShakeListener(new ShakeEventListener.OnShakeListener() {
-
             public void onShake() {
-                if(b) {
-
-                    enviaLocalizacao();
-                }
-
+                if(ativarEnvioLocalizacao) enviaLocalizacao();
             }
         });
-
 
         // Listener do botao "Fazer denuncia", que abre a activity de denuncia;
         bDenuncia.setOnClickListener(new View.OnClickListener() {
@@ -127,68 +113,51 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         });
 
-
-
+        // Listener do botao Emergencia, que ativa o envio da localizacao atual ao banco de dados;
         bEmergenciaL.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Pegando a localizacao do usuario
-                    //enviaLocalizacao();
                     Toast.makeText(MainActivity.this, "Modo emergência ligado por 10s\n\t\tAgite para enviar localização.", Toast.LENGTH_SHORT).show();
                     bEmergenciaL.setEnabled(false);
-                    b = true;
+                    ativarEnvioLocalizacao = true;
+
+                    // Timer que desabilita o botao por 10 segundos;
                     Timer buttonTimer = new Timer();
                     buttonTimer.schedule(new TimerTask() {
 
                         @Override
                         public void run() {
                             runOnUiThread(new Runnable() {
-
                                 @Override
                                 public void run() {
-                                    b = false;
+                                    ativarEnvioLocalizacao = false;
                                     bEmergenciaL.setEnabled(true);
                                     Toast.makeText(MainActivity.this, "Modo emergência desligado.", Toast.LENGTH_SHORT).show();
-
                                 }
                             });
                         }
                     }, 10000);
                 }
             });
+    } // Fim do onCreate
 
-
-    }
-
-
+    /**
+     * Metodo que envia a localizacao atual do usuario para o banco de dados.
+     */
     public void enviaLocalizacao(){
 
-        bEmergenciaL.setEnabled(false);
-        b = false;
+        ativarEnvioLocalizacao = false;
 
         getPermissaoLocalizacao();
         getLocalizacao();
         escreveLocBD();
+
         Toast.makeText(MainActivity.this, "Localização enviada!", Toast.LENGTH_SHORT).show();
-
-        Timer buttonTimer = new Timer();
-        buttonTimer.schedule(new TimerTask() {
-
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        bEmergenciaL.setEnabled(true);
-                    }
-                });
-            }
-        }, 5000);
-
-
     }
 
+    /**
+     * Funcao para a deteccao continua de movimento.
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -197,18 +166,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 SensorManager.SENSOR_DELAY_UI);
     }
 
-
+    /**
+     * Funcao para a deteccao continua de movimento.
+     */
     @Override
     protected void onPause() {
         mSensorManager.unregisterListener(mSensorListener);
         super.onPause();
-    }
-
-    @Override
-    protected void onDestroy(){
-        //mSensorListener.stop();
-        mSensorManager.unregisterListener(mSensorListener);
-        super.onDestroy();
     }
 
     /**
@@ -234,6 +198,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         Intent intent = new Intent(this, InformacoesActivity.class);
         startActivity(intent);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -265,7 +230,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         switch (menuItem.getItemId()) {
             case R.id.nav_main:
-                //something
                 break;
 
             case R.id.nav_denuncia:
@@ -294,6 +258,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         });
     }
 
+    /**
+     * Metodo que sincroniza com a API de localizacao do Google.
+     */
     private synchronized void callConnection() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addOnConnectionFailedListener(this)
@@ -301,31 +268,19 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 .addApi(LocationServices.API)
                 .build();
         mGoogleApiClient.connect();
-
     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         Log.i("LOG", "onConnected(" + bundle + ")");
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        Location l = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        @SuppressLint("MissingPermission") Location l = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
         if(l != null) {
             Log.i("LOG", "latitude: "+l.getLatitude());
             Log.i("LOG", "longitude: "+l.getLongitude());
 
         }
-
     }
 
     @Override
@@ -354,6 +309,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 });
     }
 
+    /**
+     * Metodo que escreve a localizacao obtida no banco de dados.
+     */
     public void escreveLocBD(){
 
         firebaseLeTotalEmergencias();
@@ -362,49 +320,44 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         Date currentTime = Calendar.getInstance().getTime();
         String data = currentTime.toString();
 
+        // Grava a latitude;
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("emergencia/"+data+"/latitude");
         myRef.setValue(latitude);
 
+        // Grava a longitude;
         FirebaseDatabase database2 = FirebaseDatabase.getInstance();
         DatabaseReference myRef2 = database.getReference("emergencia/"+data+"/longitude");
         myRef2.setValue(longitude);
 
-        // Atualiza o total de denuncias no banco de dados;
+        // Atualiza o total de emergencias no banco de dados;
         FirebaseDatabase database3 = FirebaseDatabase.getInstance();
         DatabaseReference myRef3 = database.getReference("total_emergencias");
         myRef3.setValue(""+totalEmergencias);
     }
 
+    /**
+     * Metodo que verifica se o aplicativo possui permissao para acessar a localizacao,
+     * caso nao possua, pede ao usuario a permissao para conseguir realizar a funcao de
+     * emergencia.
+     */
     public void getPermissaoLocalizacao(){
-        // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(MainActivity.this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
+            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
 
-            } else {
-
-                // No explanation needed, we can request the permission.
-
-                ActivityCompat.requestPermissions(MainActivity.this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
+            }
+            else{
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
             }
         }
     }
 
+    /**
+     * Metodo que le do banco de dados, o total atual de emergencias, para
+     * manter essa contagem atualizada;
+     */
     private void firebaseLeTotalEmergencias() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("total_emergencias");
