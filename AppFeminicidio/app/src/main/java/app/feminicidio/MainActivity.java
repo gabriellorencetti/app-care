@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private GoogleApiClient mGoogleApiClient;
     private FusedLocationProviderClient fusedLocationClient;
+    boolean b = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,11 +102,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mSensorListener.setOnShakeListener(new ShakeEventListener.OnShakeListener() {
 
             public void onShake() {
-                enviaLocalizacao();
+                if(b) {
 
-                mSensorListener.setOnShakeListener(null);
-                //Dar delay
-                mSensorListener.setOnShakeListener(this);
+                    enviaLocalizacao();
+                }
+
             }
         });
 
@@ -132,7 +133,27 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 @Override
                 public void onClick(View v) {
                     // Pegando a localizacao do usuario
-                    enviaLocalizacao();
+                    //enviaLocalizacao();
+                    Toast.makeText(MainActivity.this, "Modo emergência ligado por 10s\n\t\tAgite para enviar localização.", Toast.LENGTH_SHORT).show();
+                    bEmergenciaL.setEnabled(false);
+                    b = true;
+                    Timer buttonTimer = new Timer();
+                    buttonTimer.schedule(new TimerTask() {
+
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    b = false;
+                                    bEmergenciaL.setEnabled(true);
+                                    Toast.makeText(MainActivity.this, "Modo emergência desligado.", Toast.LENGTH_SHORT).show();
+
+                                }
+                            });
+                        }
+                    }, 10000);
                 }
             });
 
@@ -143,6 +164,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public void enviaLocalizacao(){
 
         bEmergenciaL.setEnabled(false);
+        b = false;
 
         getPermissaoLocalizacao();
         getLocalizacao();
@@ -162,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     }
                 });
             }
-        }, 3000);
+        }, 5000);
 
 
     }
