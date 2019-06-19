@@ -8,9 +8,6 @@
     <item android:id="@+id/nav_denuncia"
         android:icon="@drawable/ic_announcement_black"
         android:title="Fazer denúncia" />
-    <item android:id="@+id/nav_emergencia"
-        android:icon="@drawable/ic_contact_phone_black"
-        android:title="Contato de emergência" />
     <item android:id="@+id/nav_telefones"
         android:icon="@drawable/ic_local_phone_black"
         android:title="Telefones úteis" />

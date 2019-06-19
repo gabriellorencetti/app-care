@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.location.Location;
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -34,8 +35,11 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -54,14 +58,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private ActionBarDrawerToggle mToggle;
     private static String longitude;
     private static String latitude;
+    boolean delay = true;
 
+
+    private static int totalEmergencias;
     private SensorManager mSensorManager;
-
     private ShakeEventListener mSensorListener;
-
-
-
-    // private FusedLocationProviderClient mFusedLocationClient;
 
     private GoogleApiClient mGoogleApiClient;
     private FusedLocationProviderClient fusedLocationClient;
@@ -100,7 +102,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mSensorListener.setOnShakeListener(new ShakeEventListener.OnShakeListener() {
 
             public void onShake() {
-                Toast.makeText(MainActivity.this, "Shake!", Toast.LENGTH_SHORT).show();
+                enviaLocalizacao();
+
+                mSensorListener.setOnShakeListener(null);
+                //Dar delay
+                mSensorListener.setOnShakeListener(this);
             }
         });
 
@@ -121,34 +127,43 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         });
 
+
+
         bEmergenciaL.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Pegando a localizacao do usuario
+                    enviaLocalizacao();
+                }
+            });
+
+
+    }
+
+
+    public void enviaLocalizacao(){
+
+        bEmergenciaL.setEnabled(false);
+
+        getPermissaoLocalizacao();
+        getLocalizacao();
+        escreveLocBD();
+        Toast.makeText(MainActivity.this, "Localização enviada!", Toast.LENGTH_SHORT).show();
+
+        Timer buttonTimer = new Timer();
+        buttonTimer.schedule(new TimerTask() {
+
             @Override
-            public void onClick(View v) {
-                // Pegando a localizacao do usuario
-                bEmergenciaL.setEnabled(false);
-
-                getPermissaoLocalizacao();
-                getLocalizacao();
-                escreveLocBD();
-                Toast.makeText(MainActivity.this, "Localização enviada!", Toast.LENGTH_SHORT).show();
-
-                Timer buttonTimer = new Timer();
-                buttonTimer.schedule(new TimerTask() {
+            public void run() {
+                runOnUiThread(new Runnable() {
 
                     @Override
                     public void run() {
-                        runOnUiThread(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                bEmergenciaL.setEnabled(true);
-                            }
-                        });
+                        bEmergenciaL.setEnabled(true);
                     }
-                }, 3000);
-
+                });
             }
-        });
+        }, 3000);
 
 
     }
@@ -161,10 +176,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 SensorManager.SENSOR_DELAY_UI);
     }
 
+
     @Override
     protected void onPause() {
         mSensorManager.unregisterListener(mSensorListener);
         super.onPause();
+    }
+
+    @Override
+    protected void onDestroy(){
+        //mSensorListener.stop();
+        mSensorManager.unregisterListener(mSensorListener);
+        super.onDestroy();
     }
 
     /**
@@ -226,9 +249,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
             case R.id.nav_denuncia:
                 openDenunciaActivity();
-                break;
-            case R.id.nav_emergencia:
-                //something
                 break;
 
             case R.id.nav_telefones:
@@ -314,6 +334,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     public void escreveLocBD(){
+
+        firebaseLeTotalEmergencias();
+        totalEmergencias++;
+
         Date currentTime = Calendar.getInstance().getTime();
         String data = currentTime.toString();
 
@@ -324,6 +348,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         FirebaseDatabase database2 = FirebaseDatabase.getInstance();
         DatabaseReference myRef2 = database.getReference("emergencia/"+data+"/longitude");
         myRef2.setValue(longitude);
+
+        // Atualiza o total de denuncias no banco de dados;
+        FirebaseDatabase database3 = FirebaseDatabase.getInstance();
+        DatabaseReference myRef3 = database.getReference("total_emergencias");
+        myRef3.setValue(""+totalEmergencias);
     }
 
     public void getPermissaoLocalizacao(){
@@ -353,6 +382,23 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 // result of the request.
             }
         }
+    }
+
+    private void firebaseLeTotalEmergencias() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("total_emergencias");
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String value = dataSnapshot.getValue(String.class);
+                totalEmergencias = Integer.parseInt(value);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+            }
+        });
     }
 
 }

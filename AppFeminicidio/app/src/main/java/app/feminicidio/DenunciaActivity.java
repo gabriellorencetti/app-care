@@ -21,7 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DenunciaActivity extends MainActivity {
+public class DenunciaActivity extends AppCompatActivity {
 
     private Spinner selectDenuncia;
     private EditText textoDenuncia;
@@ -93,4 +93,6 @@ public class DenunciaActivity extends MainActivity {
             }
         });
     }
+
+
 }
