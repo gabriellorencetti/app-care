@@ -15,7 +15,7 @@
             android:layout_width="0dp"
             android:layout_height="46dp"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="25dp"
             android:layout_marginBottom="20dp"
             android:background="#BC2A5D"
@@ -88,7 +88,7 @@
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
-            android:layout_height="31dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="50dp"
             android:layout_marginEnd="8dp"
