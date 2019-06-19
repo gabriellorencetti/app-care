@@ -3,8 +3,12 @@ package app.feminicidio;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -35,16 +39,28 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 123;
 
-    //protected Location sLatitudeLabel;
+
+    // The following are used for the shake detection
 
     private Button bDenuncia, bTelefones, bInfo, bEmergenciaL;
     private TextView nomeApp;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
+    private static String longitude;
+    private static String latitude;
+
+    private SensorManager mSensorManager;
+
+    private ShakeEventListener mSensorListener;
+
+
+
     // private FusedLocationProviderClient mFusedLocationClient;
 
     private GoogleApiClient mGoogleApiClient;
@@ -54,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         // Inicializando e referenciando os objetos;
         bDenuncia = (Button) findViewById(R.id.bDenuncia);
@@ -73,6 +91,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         FirebaseApp.initializeApp(getApplicationContext());
 
+        getPermissaoLocalizacao();
+        getLocalizacao();
+
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mSensorListener = new ShakeEventListener();
+
+        mSensorListener.setOnShakeListener(new ShakeEventListener.OnShakeListener() {
+
+            public void onShake() {
+                Toast.makeText(MainActivity.this, "Shake!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
         // Listener do botao "Fazer denuncia", que abre a activity de denuncia;
@@ -95,13 +125,46 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             @Override
             public void onClick(View v) {
                 // Pegando a localizacao do usuario
+                bEmergenciaL.setEnabled(false);
 
                 getPermissaoLocalizacao();
                 getLocalizacao();
+                escreveLocBD();
                 Toast.makeText(MainActivity.this, "Localização enviada!", Toast.LENGTH_SHORT).show();
+
+                Timer buttonTimer = new Timer();
+                buttonTimer.schedule(new TimerTask() {
+
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                bEmergenciaL.setEnabled(true);
+                            }
+                        });
+                    }
+                }, 3000);
 
             }
         });
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSensorManager.registerListener(mSensorListener,
+                mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_UI);
+    }
+
+    @Override
+    protected void onPause() {
+        mSensorManager.unregisterListener(mSensorListener);
+        super.onPause();
     }
 
     /**
@@ -242,18 +305,25 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     public void onSuccess(Location location) {
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
-                            Date currentTime = Calendar.getInstance().getTime();
-                            String data = currentTime.toString();
-                            FirebaseDatabase database = FirebaseDatabase.getInstance();
-                            DatabaseReference myRef = database.getReference("emergencia/"+data+"/latitude");
-                            myRef.setValue(String.valueOf(location.getLatitude()));
 
-                            FirebaseDatabase database2 = FirebaseDatabase.getInstance();
-                            DatabaseReference myRef2 = database.getReference("emergencia/"+data+"/longitude");
-                            myRef2.setValue(String.valueOf(location.getLongitude()));
+                            latitude = String.valueOf(location.getLatitude());
+                            longitude = String.valueOf(location.getLongitude());
                         }
                     }
                 });
+    }
+
+    public void escreveLocBD(){
+        Date currentTime = Calendar.getInstance().getTime();
+        String data = currentTime.toString();
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("emergencia/"+data+"/latitude");
+        myRef.setValue(latitude);
+
+        FirebaseDatabase database2 = FirebaseDatabase.getInstance();
+        DatabaseReference myRef2 = database.getReference("emergencia/"+data+"/longitude");
+        myRef2.setValue(longitude);
     }
 
     public void getPermissaoLocalizacao(){
@@ -284,7 +354,5 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         }
     }
-
-
 
 }

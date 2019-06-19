@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
@@ -20,7 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DenunciaActivity extends AppCompatActivity {
+public class DenunciaActivity extends MainActivity {
 
     private Spinner selectDenuncia;
     private EditText textoDenuncia;
@@ -39,7 +40,6 @@ public class DenunciaActivity extends AppCompatActivity {
 
         inicializaFirebase();
         firebaseLeTotalDenuncias();
-
         /**
          * Ao tocar no botao, envia a denuncia para o banco de dados do Firebase.
          */
