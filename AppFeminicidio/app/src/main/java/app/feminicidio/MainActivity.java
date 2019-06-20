@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         //temporizador do modo de emergencia
         timerModoEmergencia = new Timer();
-
+        bEmergenciaL.setEnabled(true);
         // Listener do botao Emergencia, que ativa o envio da localizacao atual ao banco de dados;
         bEmergenciaL.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -406,7 +406,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                             @Override
                             public void run() {
                                 ativarEnvioLocalizacao = false;
-                                bEmergenciaL.setEnabled(true);
                                 Toast.makeText(MainActivity.this, "Modo emergência desligado.", Toast.LENGTH_SHORT).show();
                                 modoEmergencia = false;
                             }
