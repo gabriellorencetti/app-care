@@ -44,4 +44,5 @@
         app:menu="@menu/navigation_menu"
         tools:layout_editor_absoluteX="0dp">
     </android.support.design.widget.NavigationView>
+
 </android.support.v4.widget.DrawerLayout>

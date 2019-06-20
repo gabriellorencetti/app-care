@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private Timer timerModoEmergencia;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -120,20 +122,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         bEmergenciaL.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //checa se o aparelho esta com o modo emergencia ligado
-                    //se estiver, ele desliga
-                    if(modoEmergencia == true){
-                        Toast.makeText(MainActivity.this, "Modo emergência desligado.", Toast.LENGTH_SHORT).show();
-                        modoEmergencia = false;
-                        timerModoEmergencia.cancel();
-                        timerModoEmergencia = new Timer();
-                    }else {//liga o modo emergencia caso contrario
-                        ativarEnvioLocalizacao = true;
-                        modoEmergencia = true;
-                        //muda para a activity que permite ao usuario selecionar a duracao do modo emergencia
-                        Intent escolheTempo = new Intent(MainActivity.this, SetEmergencyTimeActivity.class);
-                        startActivityForResult(escolheTempo, TEMPO_EMERGENCIA_REQUEST);
-                    }
+                    ligaDesligaModoEmergencia();
                 }
             });
     } // Fim do onCreate
@@ -196,6 +185,27 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         startActivity(intent);
     }
 
+    /**
+     * Metodo que gerencia o modo de emergencia, assim como a sua activity
+     */
+    private void ligaDesligaModoEmergencia() {
+        //checa se o aparelho esta com o modo emergencia ligado
+        //se estiver, ele desliga
+        if(modoEmergencia == true){
+            Toast.makeText(MainActivity.this, "Modo emergência desligado.", Toast.LENGTH_SHORT).show();
+            modoEmergencia = false;
+            timerModoEmergencia.cancel();
+            timerModoEmergencia = new Timer();
+        }else {//liga o modo emergencia caso contrario
+            ativarEnvioLocalizacao = true;
+            modoEmergencia = true;
+            //muda para a activity que permite ao usuario selecionar a duracao do modo emergencia
+            Intent escolheTempo = new Intent(MainActivity.this, SetEmergencyTimeActivity.class);
+            startActivityForResult(escolheTempo, TEMPO_EMERGENCIA_REQUEST);
+        }
+    }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -224,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     public void selectItemDrawer(MenuItem menuItem) {
-
+        System.out.println(menuItem.getItemId());
         switch (menuItem.getItemId()) {
             case R.id.nav_main:
                 break;
@@ -239,6 +249,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
             case R.id.nav_info:
                 openInfoActivity();
+                break;
+            case R.id.nav_emergencia:
+                ligaDesligaModoEmergencia();
                 break;
             default:
                 break;
@@ -371,6 +384,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         });
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
