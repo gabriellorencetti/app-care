@@ -49,7 +49,7 @@
                 android:id="@+id/btDelegaciaMulher"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#8F1741"
+                android:backgroundTint="#bb285c"
                 android:drawableLeft="@drawable/white_siren"
                 android:text="@string/telefones_string_delegaciaMulher"
                 android:textColor="#FFFFFF" />
@@ -58,7 +58,7 @@
                 android:id="@+id/btDireitosHumanos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#8F1741"
+                android:backgroundTint="#bb285c"
                 android:drawableLeft="@drawable/white_book"
                 android:text="@string/telefones_string_DirHuman"
                 android:textColor="#FFFFFF" />
@@ -67,7 +67,7 @@
                 android:id="@+id/btCVV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#8F1741"
+                android:backgroundTint="#bb285c"
                 android:drawableLeft="@drawable/white_mind"
                 android:text="@string/telefones_string_CVV"
                 android:textColor="#FFFFFF" />
@@ -76,7 +76,7 @@
                 android:id="@+id/btSAMU"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#8F1741"
+                android:backgroundTint="#bb285c"
                 android:drawableLeft="@drawable/white_hospital_2"
                 android:text="@string/telefones_string_SAMU"
                 android:textColor="#FFFFFF" />

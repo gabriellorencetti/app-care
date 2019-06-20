@@ -28,7 +28,12 @@
         <activity
             android:name=".InformacoesActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".SetEmergencyTimeActivity" />
+        <activity android:name=".SetEmergencyTimeActivity"
+            android:parentActivityName=".MainActivity"/>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
     <uses-permission android:name="android.permission.CALL_PHONE"/>
 </manifest>

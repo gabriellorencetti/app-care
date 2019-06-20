@@ -60,7 +60,7 @@
             android:backgroundTint="#E91E63"
             android:ems="10"
             android:gravity="start|top"
-            android:hint="Descreva a denúncia sofrida"
+            android:hint="Descreva a violência sofrida ou presenciada. "
             android:inputType="textMultiLine"
             android:padding="10dp"
             android:textColor="#FFFFFF"
