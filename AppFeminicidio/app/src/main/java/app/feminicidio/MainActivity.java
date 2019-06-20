@@ -2,15 +2,13 @@ package app.feminicidio;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.ClipData;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.location.Location;
-import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -60,8 +58,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private ShakeEventListener mSensorListener;
     private GoogleApiClient mGoogleApiClient;
     private FusedLocationProviderClient fusedLocationClient;
-    boolean ativarEnvioLocalizacao = false;
-
+    boolean ativarEnvioLocalizacao = false, modoEmergencia = false;
+    private static final int TEMPO_EMERGENCIA_REQUEST = 1;
+    private int tempoEmergencia;
+    private Timer timerModoEmergencia;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,30 +113,27 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         });
 
+        //temporizador do modo de emergencia
+        timerModoEmergencia = new Timer();
+
         // Listener do botao Emergencia, que ativa o envio da localizacao atual ao banco de dados;
         bEmergenciaL.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(MainActivity.this, "Modo emergência ligado por 10s\n\t\tAgite para enviar localização.", Toast.LENGTH_SHORT).show();
-                    bEmergenciaL.setEnabled(false);
-                    ativarEnvioLocalizacao = true;
-
-                    // Timer que desabilita o botao por 10 segundos;
-                    Timer buttonTimer = new Timer();
-                    buttonTimer.schedule(new TimerTask() {
-
-                        @Override
-                        public void run() {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    ativarEnvioLocalizacao = false;
-                                    bEmergenciaL.setEnabled(true);
-                                    Toast.makeText(MainActivity.this, "Modo emergência desligado.", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                    }, 10000);
+                    //checa se o aparelho esta com o modo emergencia ligado
+                    //se estiver, ele desliga
+                    if(modoEmergencia == true){
+                        Toast.makeText(MainActivity.this, "Modo emergência desligado.", Toast.LENGTH_SHORT).show();
+                        modoEmergencia = false;
+                        timerModoEmergencia.cancel();
+                        timerModoEmergencia = new Timer();
+                    }else {//liga o modo emergencia caso contrario
+                        ativarEnvioLocalizacao = true;
+                        modoEmergencia = true;
+                        //muda para a activity que permite ao usuario selecionar a duracao do modo emergencia
+                        Intent escolheTempo = new Intent(MainActivity.this, SetEmergencyTimeActivity.class);
+                        startActivityForResult(escolheTempo, TEMPO_EMERGENCIA_REQUEST);
+                    }
                 }
             });
     } // Fim do onCreate
@@ -375,4 +372,37 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        //recupera o valor da duracao do modo emergencia escolhida pelo usuario
+        if (requestCode == TEMPO_EMERGENCIA_REQUEST) {
+
+            //se nenhum erro ocorreu
+            if(resultCode == Activity.RESULT_OK){
+                tempoEmergencia = data.getExtras().getInt("tempo");
+
+                Toast.makeText(MainActivity.this, "Modo  emergência ligado por " + tempoEmergencia/60000 + " minutos", Toast.LENGTH_SHORT).show();
+
+                //agenda o desligamento automatico do modo emergencia para 'tempoEmergencia/60000' minutos
+                timerModoEmergencia.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ativarEnvioLocalizacao = false;
+                                bEmergenciaL.setEnabled(true);
+                                Toast.makeText(MainActivity.this, "Modo emergência desligado.", Toast.LENGTH_SHORT).show();
+                                modoEmergencia = false;
+                            }
+                        });
+                    }
+                }, tempoEmergencia);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }
 }

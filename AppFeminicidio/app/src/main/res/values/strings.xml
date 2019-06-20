@@ -37,6 +37,11 @@
         <b><font size="20">\n\nO que fazemos com as suas denúncias/solicitações de emergência?</font></b>
         \n\tAs denúncias são enviadas ao banco de dados da Delegacia da Mulher de sua região. Lá as ocorrências são avaliadas e, de acordo com a situação, decisões cabíveis são tomadas.\n
        </string>
+    <string name="duracao_escolhida">1 min</string>
+    <string name="tv_header_setpop">Duração do modo de emergência:</string>
+    <string name="tv_min_dur">1</string>
+    <string name="tv_max_dur">120</string>
+    <string name="confirmar">Confirmar</string>
 
 
 </resources>

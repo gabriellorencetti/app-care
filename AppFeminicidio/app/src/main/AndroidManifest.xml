@@ -28,6 +28,7 @@
         <activity
             android:name=".InformacoesActivity"
             android:parentActivityName=".MainActivity" />
+        <activity android:name=".SetEmergencyTimeActivity" />
     </application>
     <uses-permission android:name="android.permission.CALL_PHONE"/>
 </manifest>
