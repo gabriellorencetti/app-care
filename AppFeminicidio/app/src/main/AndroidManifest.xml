@@ -29,5 +29,5 @@
             android:name=".InformacoesActivity"
             android:parentActivityName=".MainActivity" />
     </application>
-
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
 </manifest>

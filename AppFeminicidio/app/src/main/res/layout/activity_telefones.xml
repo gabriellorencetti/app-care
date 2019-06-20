@@ -9,6 +9,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <TextView
             android:id="@+id/textTelefones"
             android:layout_width="0dp"
@@ -17,37 +18,70 @@
             android:layout_marginTop="30dp"
             android:layout_marginEnd="30dp"
             android:background="#bb285c"
+            android:drawableRight="@android:drawable/stat_sys_phone_call"
+            android:padding="5dp"
             android:text="Telefones úteis"
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="#FFFFFF"
             android:textSize="22sp"
-            android:padding="5dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.492"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textView2"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="40dp"
-            android:background="#e93578"
-            android:text="@string/telefones_string"
-            android:textAlignment="center"
-            android:textAllCaps="false"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="13dp"
+            android:layout_marginEnd="7dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textTelefones" />
+            app:layout_constraintTop_toBottomOf="@+id/textTelefones">
+
+            <Button
+                android:id="@+id/btDelegaciaMulher"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#8F1741"
+                android:drawableLeft="@drawable/white_siren"
+                android:text="@string/telefones_string_delegaciaMulher"
+                android:textColor="#FFFFFF" />
+
+            <Button
+                android:id="@+id/btDireitosHumanos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#8F1741"
+                android:drawableLeft="@drawable/white_book"
+                android:text="@string/telefones_string_DirHuman"
+                android:textColor="#FFFFFF" />
+
+            <Button
+                android:id="@+id/btCVV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#8F1741"
+                android:drawableLeft="@drawable/white_mind"
+                android:text="@string/telefones_string_CVV"
+                android:textColor="#FFFFFF" />
+
+            <Button
+                android:id="@+id/btSAMU"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#8F1741"
+                android:drawableLeft="@drawable/white_hospital_2"
+                android:text="@string/telefones_string_SAMU"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+
     </android.support.constraint.ConstraintLayout>
 
     <android.support.design.widget.NavigationView
@@ -59,7 +93,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:menu="@menu/navigation_menu"
-        tools:layout_editor_absoluteX="0dp">
-    </android.support.design.widget.NavigationView>
+        tools:layout_editor_absoluteX="0dp"></android.support.design.widget.NavigationView>
 
     </android.support.v4.widget.DrawerLayout>

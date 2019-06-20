@@ -12,9 +12,13 @@
     <string name="open">Open</string>
     <string name="close">Close</string>
 
-    <string name="telefones_string">\n<b>Delegacia da Mulher (Denúncia)</b>\n<font size="28">180</font>\n\n
-        <b>Centro de valorização da vida\n(Apoio psicológico)</b>\n<font size="28">188</font>
-        \n\n<b>SAMU (Emergências Médicas)</b>\n<font size="28">192</font>\n\n<b>Direitos humanos\n(Consulta de direitos e denúncia)</b>\n<font size="28">100</font></string>
+    <string name="telefones_string_delegaciaMulher">\n<b>Delegacia da Mulher (Denúncia)</b>\n<font size="28">180</font></string>
+
+    <string name="telefones_string_CVV">\n<b>Centro de valorização da vida\n(Apoio psicológico)</b>\n<font size="28">188</font></string>
+
+    <string name="telefones_string_SAMU">\n<b>SAMU (Emergências Médicas)</b>\n<font size="28">192</font></string>
+
+    <string name="telefones_string_DirHuman">\n<b>Direitos humanos\n(Consulta de direitos e denúncia)</b>\n<font size="28">100</font></string>
 
     <string name="infos_string"><b><font size="20">\tComo funciona o aplicativo?</font></b>\n
         \tO aplicativo permite que você faça, de forma fácil, denúncias contra três tipos de violência: assédio, tentativa de feminicídio e violência doméstica.
