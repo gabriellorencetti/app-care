@@ -27,7 +27,6 @@ public class InformacoesActivity extends AppCompatActivity {
         // Inicializa sidebar menu;
         NavigationView nvDrawer = (NavigationView) findViewById(R.id.sidebar);
         setupDrawerContent(nvDrawer);
-
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
