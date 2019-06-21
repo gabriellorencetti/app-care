@@ -51,6 +51,7 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 123;
+    private static final int REQUEST_CALL = 1 ;
     private Button bDenuncia, bTelefones, bInfo, bEmergenciaL;
     private TextView nomeApp;
     private DrawerLayout mDrawerLayout;
@@ -68,6 +69,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private Timer timerModoEmergencia;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //solicitando permissoes
+        getPermissaoLocalizacao();
+
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -95,13 +100,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         //Inicializando o sensor que detecta a movimentacao do celular;
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensorListener = new ShakeEventListener();
-
-        //inicializando o banco de localizacao inicial
-        getLocalizacao();
-
-        //solicitando permissoes
-        getPermissaoLocalizacao();
-
 
         // Listener para detectar movimento;
         mSensorListener.setOnShakeListener(new ShakeEventListener.OnShakeListener() {
@@ -137,6 +135,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     ligaDesligaModoEmergencia();
                 }
         });
+
+
     } // Fim do onCreate
 
     /**
@@ -208,6 +208,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
      * Metodo que gerencia o modo de emergencia, assim como a sua activity
      */
     private void ligaDesligaModoEmergencia() {
+        //inicializando o banco de localizacao inicial
+        getLocalizacao();
+
         //checa se o aparelho esta com o modo emergencia ligado
         //se estiver, ele desliga
         if(modoEmergencia == true){
@@ -371,13 +374,24 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public void getPermissaoLocalizacao(){
 
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        }
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-            }
+    }
 
+    /**
+     * Metodo que verifica se o aplicativo possui permissao para acessar a localizacao,
+     * caso nao possua, pede ao usuario a permissao para conseguir realizar a funcao de
+     * emergencia.
+     */
+    public void getPermissaoLigacao(){
+
+        if(ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL);
         }
     }
+
 
     /**
      * Metodo que le do banco de dados, o total atual de emergencias, para
