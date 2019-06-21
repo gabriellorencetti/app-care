@@ -102,6 +102,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:menu="@menu/navigation_menu"
-        tools:layout_editor_absoluteX="0dp"></android.support.design.widget.NavigationView>
+        tools:layout_editor_absoluteX="0dp">
+    </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>

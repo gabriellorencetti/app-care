@@ -16,6 +16,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+/**
+ * Classe criada para implementar a tela de telefones uteis
+ */
 public class TelefonesActivity extends AppCompatActivity {
     private static final int REQUEST_CALL = 1;
     private Button telefoneDelegaciaMulher, telefoneDireitosHumanos, telefoneCVV, telefoneSAMU;
@@ -41,6 +44,9 @@ public class TelefonesActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *  Inicializa os botões da activity
+     */
     private void inicializaBotoes() {
         telefoneDelegaciaMulher.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,7 +54,7 @@ public class TelefonesActivity extends AppCompatActivity {
                 telefonar(foneDelMulher);
             }
         });
-//
+
         telefoneDireitosHumanos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,6 +78,10 @@ public class TelefonesActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Inicia uma ligacao telefonica com o numero indicado em opt
+     * @param opt numero de telefone solicitado
+     */
     private void telefonar(int opt) {
         Intent intent = new Intent(Intent.ACTION_CALL);
 
@@ -87,8 +97,13 @@ public class TelefonesActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Verificando resultado de permissões solicitadas
+     */
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        //verifica se a permissao para fazer ligacoes foi concedida pelo usuario
         if(requestCode == REQUEST_CALL){
             if(grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(this,"Você precisa permitir que o app faça ligações.", Toast.LENGTH_SHORT).show();
@@ -98,6 +113,10 @@ public class TelefonesActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Inicializa os componentes do drawer
+     * @param navigationView
+     */
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -108,6 +127,10 @@ public class TelefonesActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Verifica o item do menu selecionado pelo usuario e abre a activity desejada
+     * @param menuItem item selecionado pelo usuario
+     */
     public void selectItemDrawer(MenuItem menuItem) {
 
         switch (menuItem.getItemId()) {
@@ -120,6 +143,7 @@ public class TelefonesActivity extends AppCompatActivity {
                 break;
 
             case R.id.nav_telefones:
+                openTelefonesActivity();
                 break;
 
             case R.id.nav_info:
@@ -130,18 +154,36 @@ public class TelefonesActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Abre a activity principal
+     */
     public void openMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Abre TelefonesActivity
+     */
+    public void openTelefonesActivity() {
+        Intent intent = new Intent(this, TelefonesActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * Abre DenunciaActivity
+     */
+    public void openDenunciaActivity() {
+        Intent intent = new Intent(this, DenunciaActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * Abre InfoActivity
+     */
     public void openInfoActivity() {
         Intent intent = new Intent(this, InformacoesActivity.class);
         startActivity(intent);
     }
 
-    public void openDenunciaActivity() {
-        Intent intent = new Intent(this, DenunciaActivity.class);
-        startActivity(intent);
-    }
 }

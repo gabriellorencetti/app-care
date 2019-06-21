@@ -10,6 +10,9 @@ import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.location.Location;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -87,10 +90,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         // Inicializando o banco de dados Firebase
         FirebaseApp.initializeApp(getApplicationContext());
+        firebaseLeTotalEmergencias();
 
         //Inicializando o sensor que detecta a movimentacao do celular;
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensorListener = new ShakeEventListener();
+
+        //inicializando o banco de localizacao inicial
+        getLocalizacao();
+
+        //solicitando permissoes
+        getPermissaoLocalizacao();
+
 
         // Listener para detectar movimento;
         mSensorListener.setOnShakeListener(new ShakeEventListener.OnShakeListener() {
@@ -115,16 +126,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         });
 
-        //temporizador do modo de emergencia
+        // Temporizador do modo de emergencia
         timerModoEmergencia = new Timer();
         bEmergenciaL.setEnabled(true);
-        // Listener do botao Emergencia, que ativa o envio da localizacao atual ao banco de dados;
+
+        // Listener do botao Emergencia, que ativa o envio da localizacao atual ao banco de dados e agenda a tarefa de desligamento automatico;
         bEmergenciaL.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     ligaDesligaModoEmergencia();
                 }
-            });
+        });
     } // Fim do onCreate
 
     /**
@@ -132,13 +144,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
      */
     public void enviaLocalizacao(){
 
-        ativarEnvioLocalizacao = false;
-
         getPermissaoLocalizacao();
         getLocalizacao();
         escreveLocBD();
 
-        Toast.makeText(MainActivity.this, "Localização enviada!", Toast.LENGTH_SHORT).show();
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrando por 500 milliseconds
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            v.vibrate(VibrationEffect.createOneShot(1000, VibrationEffect.DEFAULT_AMPLITUDE));
+        } else {
+            v.vibrate(1000);
+        }
+
+        Toast.makeText(MainActivity.this, "Localização enviada!", Toast.LENGTH_LONG).show();
+        ativarEnvioLocalizacao = false;
     }
 
     /**
@@ -198,6 +217,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             timerModoEmergencia = new Timer();
         }else {//liga o modo emergencia caso contrario
             ativarEnvioLocalizacao = true;
+
             modoEmergencia = true;
             //muda para a activity que permite ao usuario selecionar a duracao do modo emergencia
             Intent escolheTempo = new Intent(MainActivity.this, SetEmergencyTimeActivity.class);
@@ -234,7 +254,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     public void selectItemDrawer(MenuItem menuItem) {
-        System.out.println(menuItem.getItemId());
         switch (menuItem.getItemId()) {
             case R.id.nav_main:
                 break;
@@ -326,10 +345,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         firebaseLeTotalEmergencias();
         totalEmergencias++;
-
         Date currentTime = Calendar.getInstance().getTime();
         String data = currentTime.toString();
-
         // Grava a latitude;
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("emergencia/"+data+"/latitude");
@@ -356,11 +373,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-
-            }
-            else{
                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
             }
+
         }
     }
 
@@ -385,7 +400,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         });
     }
 
-
+    /**
+     * Agenda o desligamento automatico do modo de emergencia
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -412,9 +429,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                         });
                     }
                 }, tempoEmergencia);
-            }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
             }
         }
     }
